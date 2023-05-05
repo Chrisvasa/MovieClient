@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react'
-import './App.css'
 import api from "./Api";
-import { Route, Routes } from 'react-router-dom';
 
 
 // [ ] Startsida som listar alla personer som finns i systemet automatiskt, det ska också finnas ett formulär för att skapa en ny person.
@@ -13,23 +11,29 @@ function App() {
 
   const [data, setData] = useState([]);
   const fetchData = async () => {
-    const result = await api.get("Persons");
+    const result = await api.get("Genres/FilterByGenre?Name=Action");
     setData(result.data);
   }
 
   useEffect(() => {
+    console.log("Loaded");
     fetchData();
   }, []);
 
   return (
-    
+
     <>
-    {data.map((person) => (
-      <div key={person.id} className='person'>
-        <h1>{person.firstName} {person.lastName}</h1>
-        <h3>{person.email}</h3>
-      </div>
-    ))}
+      {data.map((movie) => (
+        <div key={movie.id} className='person'>
+          <h1>{movie.genre}</h1>
+          <h2>{movie.matches}</h2>
+          {movie.links.map((link) => (
+            <div>
+              <a href="{link}">{link}</a>
+            </div>
+          ))}
+        </div>
+      ))}
     </>
   )
 }
