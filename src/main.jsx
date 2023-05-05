@@ -10,6 +10,7 @@ import {
 
 //Pages
 import Movies from "./pages/movie";
+import Persons from "./pages/persons";
 import Person from "./pages/person";
 import Genre from './pages/genre';
 import ErrorPage from './error-page';
@@ -21,10 +22,9 @@ import RootLayout from './layouts/RootLayout';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<RootLayout />}>
-      <Route path='' element={<Person />}>
-        <Route path='Person:id' />
-      </Route>
+    <Route path="" element={<RootLayout />}>
+      <Route path='/' element={<Persons />} />
+      <Route path=':id' element={<Person />} />
       <Route path='movies' element={<App />} />
       <Route path='genres' element={<Genre />} />
     </Route>

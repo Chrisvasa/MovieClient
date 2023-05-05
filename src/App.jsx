@@ -29,7 +29,7 @@ function App() {
           <h2>{movie.matches}</h2>
           {movie.links.map((link) => (
             <div>
-              <a href="{link}">{link}</a>
+              <a href={link} target='_blank'>{link}</a>
             </div>
           ))}
         </div>
