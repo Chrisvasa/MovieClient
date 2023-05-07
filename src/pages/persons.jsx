@@ -3,7 +3,7 @@ import api from '../Api';
 import styled from "styled-components";
 import { NavLink, useNavigate, Outlet } from 'react-router-dom';
 
-export default function persons() {
+export default function Persons() {
     const [data, setData] = useState([]);
     const fetchData = async () => {
         const result = await api.get("Persons");
@@ -14,17 +14,17 @@ export default function persons() {
         fetchData();
     }, []);
 
+    // Allows navigation between routers without a navlink
+    // Will send person data to the destination, so we dont have to fetch the data again
     const navigate = useNavigate();
-    function test(person) {
-        // console.log(`${person.firstName} was clicked`)
-        navigate(`${person.id}`, { state: person })
-    }
+    const GoToPersonPage = (person) => { navigate(`${person.id}`, { state: person }) };
 
     return (
         <>
+            {/* Maps through the data and prints out First/Lastname and the users email */}
             <PersonContainer>
                 {data.map((person) => (
-                    <Div key={person.id} className='person' onClick={() => test(person)}>
+                    <Div key={person.id} className='person' onClick={() => GoToPersonPage(person)}>
                         <h1>{person.firstName} {person.lastName}</h1>
                         <h3>{person.email}</h3>
                     </Div>

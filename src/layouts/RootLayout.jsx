@@ -1,12 +1,15 @@
 import { NavLink, Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 
+//The standard layout for every page with a header and some NavLinks to move to other sites
 export default function RootLayout() {
     return (
         <RootLayerContainer>
             <Header>
                 <Nav>
-                    <Title>Movie Client</Title>
+                    <NavLink to="/" style={{ textDecoration: 'none' }}>
+                        <Title>Movie Client</Title>
+                    </NavLink>
                     <NavLinkContainer>
                         <NavLink to="/">Home</NavLink>
                         <NavLink to="movies">Movies</NavLink>
