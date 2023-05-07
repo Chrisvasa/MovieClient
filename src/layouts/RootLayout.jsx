@@ -11,9 +11,9 @@ export default function RootLayout() {
                         <Title>Movie Client</Title>
                     </NavLink>
                     <NavLinkContainer>
-                        <NavLink to="/">Home</NavLink>
-                        <NavLink to="movies">Movies</NavLink>
-                        <NavLink to="genres">Genres</NavLink>
+                        <NavLink to="/" id="link">Home</NavLink>
+                        <NavLink to="movies" id="link">Movies</NavLink>
+                        <NavLink to="genres" id="link">Genres</NavLink>
                     </NavLinkContainer>
                 </Nav>
             </Header>
@@ -32,10 +32,14 @@ const RootLayerContainer = styled.div`
 const Title = styled.h1`
     font-size: 70px;
     font-weight: 700;
+    text-shadow: 5px 1px 3px rgba(0,0,0,0.5);
     background-image: linear-gradient(45deg, #553c9a, #ee4b2b);
     color: transparent;
     background-clip: text;
     -webkit-background-clip: text;
+    &:hover {
+        text-shadow: 6px 3px 2px rgba(0,0,0,0.5);
+    }
 `
 
 const Header = styled.header`
@@ -51,6 +55,9 @@ const Header = styled.header`
 const NavLinkContainer = styled.div`
     display: flex;
     flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.5rem;
     gap: 10px;
 
     > * {
@@ -58,9 +65,8 @@ const NavLinkContainer = styled.div`
         text-decoration: none;
     }
 
-    NavLink:hover {
+    #link:hover {
         color: red;
-        background-color: green;
     }
 `;
 

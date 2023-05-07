@@ -23,10 +23,14 @@ export default function Persons() {
         <>
             {/* Maps through the data and prints out First/Lastname and the users email */}
             <PersonContainer>
+                <Div>
+                    <h1>Create New User</h1>
+                </Div>
                 {data.map((person) => (
                     <Div key={person.id} className='person' onClick={() => GoToPersonPage(person)}>
                         <h1>{person.firstName} {person.lastName}</h1>
                         <h3>{person.email}</h3>
+                        <p>Click to view</p>
                     </Div>
                 ))}
             </PersonContainer>
@@ -51,8 +55,14 @@ const Div = styled.div`
     width: 20rem;
     height: 12rem;
     border-radius: 0.69rem;
-    background-color: gray;
-    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;    &:hover {
-        background-color: lightgray;
+    background-color: #4c4c4c;
+    box-shadow: 1px 1px 0px #3d3d3d,
+                2px 2px 0px #3d3d3d,
+                3px 3px 0px #3d3d3d,
+                4px 4px 0px #3d3d3d,
+                5px 5px 0px #3d3d3d,
+                6px 6px 0px #3d3d3d;
+    &:hover {
+        background-color: #626262;
     }
 `;
