@@ -12,6 +12,7 @@ import {
 import Movies from "./pages/movie";
 import Persons from "./pages/persons";
 import Person from "./pages/person";
+import Genres from './pages/genres';
 import Genre from './pages/genre';
 import ErrorPage from './error-page';
 import App from "./App"
@@ -26,7 +27,8 @@ const router = createBrowserRouter(
       <Route path='/' element={<Persons />} />
       <Route path=':id' element={<Person />} />
       <Route path='movies' element={<App />} />
-      <Route path='genres' element={<Genre />} />
+      <Route path='genres' element={<Genres />} />
+      <Route path='/genres/:id' element={<Genre />} />
     </Route>
   )
 );

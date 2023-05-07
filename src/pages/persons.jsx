@@ -4,10 +4,10 @@ import styled from "styled-components";
 import { NavLink, useNavigate, Outlet } from 'react-router-dom';
 
 export default function Persons() {
-    const [data, setData] = useState([]);
+    const [person, setPerson] = useState([]);
     const fetchData = async () => {
         const result = await api.get("Persons");
-        setData(result.data);
+        setPerson(result.data);
     }
 
     useEffect(() => {
@@ -26,7 +26,7 @@ export default function Persons() {
                 <Div>
                     <h1>Create New User</h1>
                 </Div>
-                {data.map((person) => (
+                {person.map((person) => (
                     <Div key={person.id} className='person' onClick={() => GoToPersonPage(person)}>
                         <h1>{person.firstName} {person.lastName}</h1>
                         <h3>{person.email}</h3>

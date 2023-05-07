@@ -2,6 +2,14 @@ import { useState, useEffect } from 'react'
 import api from '../Api';
 import styled from "styled-components";
 
+/* 
+ - Hämta filmer från TMDB
+ - Tillåt användaren att filtrera bland dessa genom att skriva in en genre (eller genreid?)
+ - Tillåt användaren att klicka på filmen för att få upp mer info om filmen, samt möjligheten att kunna lägga 
+ till filmen i databasen (Visa ifall filmen redan finns eller inte)
+ - Tillåt användaren att ge rating till filmer (Kolla så de inte redan givit filmen en rating)
+ */
+
 export default function getMovies() {
     const [data, setData] = useState([]);
     const fetchData = async () => {
