@@ -11,9 +11,15 @@ export default function RootLayout() {
                         <Title>Movie Client</Title>
                     </NavLink>
                     <NavLinkContainer>
-                        <NavLink to="/" id="link">Home</NavLink>
-                        <NavLink to="movies" id="link">Movies</NavLink>
-                        <NavLink to="genres" id="link">Genres</NavLink>
+                        <NavLink to="/" id="link" className={({ isActive, isPending }) =>
+                            isPending ? "pending" : isActive ? "active" : ""
+                        }>Home</NavLink>
+                        <NavLink to="movies" id="link" className={({ isActive, isPending }) =>
+                            isPending ? "pending" : isActive ? "active" : ""
+                        }>Movies</NavLink>
+                        <NavLink to="genres" id="link" className={({ isActive, isPending }) =>
+                            isPending ? "pending" : isActive ? "active" : ""
+                        }>Genres</NavLink>
                     </NavLinkContainer>
                 </Nav>
             </Header>
@@ -44,11 +50,11 @@ const Title = styled.h1`
         text-transform: uppercase;
         color: transparent;
         -webkit-text-stroke: 1px var(--text-stroke-color);
+        -webkit-text-stroke: 1px var(--animation-color);
         box-sizing: border-box;
         content: attr(data-text);
         color: var(--animation-color);
         transition: 0.25s;
-        -webkit-text-stroke: 1px var(--animation-color);
         filter: drop-shadow(0 0 15px var(--animation-color));
         &:hover {
             border-right: 6px solid var(--animation-color);
@@ -88,20 +94,24 @@ const NavLinkContainer = styled.div`
     }
 
     #link:hover {
+        color: var(--animation-color);
+        -webkit-text-stroke: 1px var(--animation-color);
+        filter: drop-shadow(0 0 23px var(--animation-color))
+    }
+    #link:hover:before {
+        transform: translateX(15em);
+    }
+    a.active {
         box-sizing: border-box;
         content: attr(data-text);
         color: var(--animation-color);
-        width: 0%;
-        inset: 0;
         border-right: var(--border-right) solid var(--animation-color);
         overflow: hidden;
         transition: 0.5s;
         -webkit-text-stroke: 1px var(--animation-color);
         width: 100%;
+        inset: 0%;
         filter: drop-shadow(0 0 23px var(--animation-color))
-    }
-    #link:hover:before {
-        transform: translateX(15em);
     }
 `;
 

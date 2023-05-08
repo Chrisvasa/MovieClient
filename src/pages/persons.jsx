@@ -18,7 +18,7 @@ export default function Persons() {
     // Allows navigation between routers without a navlink
     // Will send person data to the destination, so we dont have to fetch the data again
     const navigate = useNavigate();
-    const GoToPersonPage = (person) => { navigate(`${person.id}`, { state: person }) };
+    const GoToPersonPage = (person) => { navigate(`/person/${person.id}`, { state: person }) };
 
     return (
         <>

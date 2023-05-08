@@ -66,7 +66,7 @@ const Div = styled.div`
     text-align: center;
     margin: 0;
     padding: 0;
-    width: 20rem;
+    width: 25rem;
     height: 25rem;
     box-sizing: border-box;
     background: rgba(38, 37, 44, 0.58);

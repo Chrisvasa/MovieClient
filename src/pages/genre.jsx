@@ -3,8 +3,8 @@ import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import api from "../Api";
 
-export default function Person() {
-    const { state: person } = useLocation();
+export default function Genre() {
+    const { state: genre } = useLocation();
     const [genres, setGenre] = useState([]);
 
     const fetchData = async () => {
@@ -21,7 +21,7 @@ export default function Person() {
     // const person = state.person;
     return (
         <>
-            <h1>Test</h1>
+            <h1>{genre.name}</h1>
         </>
     );
 }

@@ -6,6 +6,11 @@ import api from "./Api";
 // [ ] Personerna är klickbara och vid klick kommer man till den personens egna sida och får upp en lista på alla genres som är kopplade till den personen samt alla filmer och dess rating.
 // [ ] Under genres ska det gå att koppla en ny genre till en person med hjälp av ID och under filmer ska det gå att lägga till en ny film (länk) och rating.
 
+// builder.Services.AddCors(options => options.AddDefaultPolicy(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
+// app.UseCors();
+// Gets all the genres in the DB
+// app.MapGet("/api/Genres/", async (DataContext context) => await context.Genres.ToListAsync());
+
 
 function App() {
 

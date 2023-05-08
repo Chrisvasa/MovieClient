@@ -10,6 +10,7 @@ import {
 
 //Pages
 import Movies from "./pages/movies";
+import Movie from "./pages/movie";
 import Persons from "./pages/persons";
 import Person from "./pages/person";
 import Genres from './pages/genres';
@@ -25,10 +26,13 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="" element={<RootLayout />}>
       <Route path='/' element={<Persons />} />
-      <Route path=':id' element={<Person />} />
+      <Route path='/person/:id' element={<Person />} />
       <Route path='movies' element={<Movies />} />
+      <Route path='/movies/:id' element={<Movie />} />
       <Route path='genres' element={<Genres />} />
       <Route path='/genres/:id' element={<Genre />} />
+
+      <Route path="*" element={ErrorPage} />
     </Route>
   )
 );

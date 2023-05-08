@@ -42,4 +42,8 @@ const GenreContainer = styled.div`
     flex-direction: row;
     flex-wrap: wrap;
     gap: 0.69rem;
+    
+    .genre {
+        width: 15rem;
+    }
 `;
