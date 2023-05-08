@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import api from '../Api';
+import { Div } from '../components/styling'
 import styled from "styled-components";
-import { NavLink, useNavigate, Outlet } from 'react-router-dom';
+import { useNavigate, Outlet } from 'react-router-dom';
 
 export default function Persons() {
     const [person, setPerson] = useState([]);
@@ -24,7 +25,7 @@ export default function Persons() {
             {/* Maps through the data and prints out First/Lastname and the users email */}
             <PersonContainer>
                 <Div>
-                    <h1>Create New User</h1>
+                    <Button>+</Button>
                 </Div>
                 {person.map((person) => (
                     <Div key={person.id} className='person' onClick={() => GoToPersonPage(person)}>
@@ -42,27 +43,38 @@ export default function Persons() {
     )
 }
 
+const Button = styled.button`
+    background: #393840;
+    background-image: -webkit-linear-gradient(top, #393840, #232227);
+    background-image: -moz-linear-gradient(top, #393840, #232227);
+    background-image: -ms-linear-gradient(top, #393840, #232227);
+    background-image: -o-linear-gradient(top, #393840, #232227);
+    background-image: linear-gradient(to bottom, #393840, #232227);
+    -webkit-border-radius: 60;
+    -moz-border-radius: 60;
+    border-radius: 60px;
+    font-family: Arial;
+    color: #676473;
+    font-size: 30px;
+    padding: 10px 20px 10px 20px;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover {
+        color:#fff;
+        background: #19191c;
+        background-image: -webkit-linear-gradient(top, #393840, #202024);
+        background-image: -moz-linear-gradient(top, #393840, #202024);
+        background-image: -ms-linear-gradient(top, #393840, #202024);
+        background-image: -o-linear-gradient(top, #393840, #202024);
+        background-image: linear-gradient(to bottom, #393840, #202024);
+        text-decoration: none;
+    }
+`;
+
 const PersonContainer = styled.div`
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    gap: 2.5rem;
-`;
-
-const Div = styled.div`
-    margin: 1rem;
-    padding: 0.5rem;
-    width: 20rem;
-    height: 12rem;
-    border-radius: 0.69rem;
-    background-color: #4c4c4c;
-    box-shadow: 1px 1px 0px #3d3d3d,
-                2px 2px 0px #3d3d3d,
-                3px 3px 0px #3d3d3d,
-                4px 4px 0px #3d3d3d,
-                5px 5px 0px #3d3d3d,
-                6px 6px 0px #3d3d3d;
-    &:hover {
-        background-color: #626262;
-    }
+    gap: 1rem;
 `;

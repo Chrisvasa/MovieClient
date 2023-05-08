@@ -9,7 +9,7 @@ import {
 } from "react-router-dom";
 
 //Pages
-import Movies from "./pages/movie";
+import Movies from "./pages/movies";
 import Persons from "./pages/persons";
 import Person from "./pages/person";
 import Genres from './pages/genres';
@@ -26,7 +26,7 @@ const router = createBrowserRouter(
     <Route path="" element={<RootLayout />}>
       <Route path='/' element={<Persons />} />
       <Route path=':id' element={<Person />} />
-      <Route path='movies' element={<App />} />
+      <Route path='movies' element={<Movies />} />
       <Route path='genres' element={<Genres />} />
       <Route path='/genres/:id' element={<Genre />} />
     </Route>
