@@ -33,3 +33,66 @@ export const Div = styled.div`
         color: #676473;
     }
 `;
+
+export const Button = styled.button`
+--border-right: 6px;
+--text-stroke-color: rgba(255,255,255,0.6);
+--animation-color: #37FF8B;
+letter-spacing: 3px;
+text-decoration: none;
+font-size: 2rem;
+font-family: "Arial";
+position: relative;
+text-transform: uppercase;
+color: transparent;
+-webkit-text-stroke: 1px var(--text-stroke-color);
+
+&:hover {
+color: var(--animation-color);
+-webkit-text-stroke: 1px var(--animation-color);
+filter: drop-shadow(0 0 23px var(--animation-color))
+}
+&:hover:before {
+transform: translateX(15em);
+}
+.active {
+box-sizing: border-box;
+content: attr(data-text);
+color: var(--animation-color);
+border-right: var(--border-right) solid var(--animation-color);
+overflow: hidden;
+transition: 0.5s;
+-webkit-text-stroke: 1px var(--animation-color);
+width: 100%;
+inset: 0%;
+filter: drop-shadow(0 0 23px var(--animation-color))
+}
+
+`;
+
+export const Input = styled.input`
+--text-stroke-color: rgba(255,255,255,0.6);
+--animation-color: #37FF8B;
+letter-spacing: 3px;
+text-decoration: none;
+font-size: 2rem;
+font-family: "Arial";
+position: relative;
+text-transform: uppercase;
+color: transparent;
+-webkit-text-stroke: 1px var(--text-stroke-color);
+background-color: #212121;
+height: 2.5rem;
+font-size: 2rem;
+text-align: center;
+border-radius: 5px;
+
+&:focus {
+color: #37FF8B;
+background-color: #212121;
+outline-color: rgba(255,255,255,0.6);
+box-shadow: -3px -3px 15px #37FF8B;
+transition: .1s;
+transition-property: box-shadow;
+}
+`;

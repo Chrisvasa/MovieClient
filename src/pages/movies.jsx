@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom';
 import styled from "styled-components";
 import axios from 'axios';
+import { Button, Input } from '../components/styling';
 
 /* 
  - Hämta filmer från TMDB
@@ -14,14 +15,30 @@ import axios from 'axios';
 export default function Movies() {
     const img = 'https://image.tmdb.org/t/p/original'
     const [movies, setMovies] = useState({ results: [] });
-    const fetchData = async () => {
+    const fetchMovies = async () => {
         const result = await axios.get("https://api.themoviedb.org/3/discover/movie?api_key=d82f364f4fa13e9d2bc3e63a48f37d0c&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=35");
-        console.log(result.data);
         setMovies(result.data);
     }
 
+    // Gets a movie from the search value
+    const fetchMovieFromSearch = async () => {
+        if (textInput != '') {
+            const result = await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=d82f364f4fa13e9d2bc3e63a48f37d0c&language=en-US&query=${textInput}&page=1&include_adult=false`);
+            setMovies(result.data);
+        }
+    }
+
+    // Gets the value from the search bar and saves it
+    const [textInput, setTextInput] = useState('');
+    const handleChange = (event) => {
+        if (event.target.value == '') {
+            fetchMovies();
+        }
+        setTextInput(event.target.value);
+    }
+
     useEffect(() => {
-        fetchData();
+        fetchMovies();
     }, []);
 
     const navigate = useNavigate();
@@ -29,6 +46,10 @@ export default function Movies() {
 
     return (
         <>
+            <SearchContainer>
+                <Input type="text" placeholder='Search by name..' onChange={handleChange} />
+                <Button onClick={fetchMovieFromSearch}>Search</Button>
+            </SearchContainer>
             <MovieContainer>
                 {movies.results.map((movie) => (
                     <Div key={movie.id} className='movie' onClick={() => GoToMoviePage(movie)}>
@@ -44,9 +65,24 @@ export default function Movies() {
     )
 }
 
+const SearchContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 0.5rem;
+
+    > * {
+        min-width: 25rem;
+        max-width: 25rem;
+    }
+`;
+
+
 const MovieContainer = styled.div`
     display: flex;
     flex-direction: row;
+    justify-content: center;
     flex-wrap: wrap;
     gap: 1rem;
 `;

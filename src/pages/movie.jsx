@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components"
+import { Button } from "../components/styling";
 
 export default function Movie() {
     const { state: movie } = useLocation();
@@ -12,6 +13,10 @@ export default function Movie() {
                 <Img src={img + movie.backdrop_path} alt="" />
                 <Desc>{movie.overview}</Desc>
             </MovieContainer>
+            <div>
+                <Button>Add Movie</Button>
+                <Button>Rate Movie</Button>
+            </div>
         </>
     )
 }
