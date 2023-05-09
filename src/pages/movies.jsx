@@ -52,13 +52,13 @@ export default function Movies() {
             </SearchContainer>
             <MovieContainer>
                 {movies.results.map((movie) => (
-                    <Div key={movie.id} className='movie' onClick={() => GoToMoviePage(movie)}>
+                    <MovieCard key={movie.id} className='movie' onClick={() => GoToMoviePage(movie)}>
                         <Img src={img + movie.backdrop_path} alt="" />
                         <div>
                             <h2>{movie.title}</h2>
                             <H3>{movie.vote_average}</H3>
                         </div>
-                    </Div>
+                    </MovieCard>
                 ))}
             </MovieContainer>
         </>
@@ -95,7 +95,7 @@ const Img = styled.img`
     border-top-right-radius: 17px;
 `;
 
-const Div = styled.div`
+const MovieCard = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import api from "../Api"
 import { useLocation } from "react-router-dom";
 import styled from "styled-components"
 import { Button } from "../components/styling";
@@ -6,6 +7,19 @@ import { Button } from "../components/styling";
 export default function Movie() {
     const { state: movie } = useLocation();
     const img = 'https://image.tmdb.org/t/p/original'
+
+    const Add = async () => {
+        const m = {
+            title: movie.title,
+            link: `https://www.themoviedb.org/movie/${movie.id}`,
+            genres: movie.genre_ids.map((x) => x).toString(),
+            personId: 5
+        }
+        console.log(m.genres)
+        const result = await api.post(`Movies/Add?title=${m.title}&link=${m.link}&genres=${m.genres}&personId=${m.personId}`);
+        console.log(result.data)
+
+    }
     return (
         <>
             <MovieContainer>
@@ -14,7 +28,7 @@ export default function Movie() {
                 <Desc>{movie.overview}</Desc>
             </MovieContainer>
             <div>
-                <Button>Add Movie</Button>
+                <Button onClick={() => Add()}>Add Movie</Button>
                 <Button>Rate Movie</Button>
             </div>
         </>
