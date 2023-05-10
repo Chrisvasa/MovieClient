@@ -15,12 +15,13 @@ import { Button, Input } from '../components/styling';
 export default function Movies() {
     const img = 'https://image.tmdb.org/t/p/original'
     const [movies, setMovies] = useState({ results: [] });
+    //Fetches movies with given page number from TMDB
     const fetchMovies = async () => {
         const result = await axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=d82f364f4fa13e9d2bc3e63a48f37d0c&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=35`);
         setMovies(result.data);
     }
 
-    // Gets a movie from the search value
+    // Gets movies that match the given search value
     const fetchMovieFromSearch = async () => {
         if (textInput != '') {
             const result = await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=d82f364f4fa13e9d2bc3e63a48f37d0c&language=en-US&query=${textInput}&include_adult=false&page=1`);
@@ -71,6 +72,7 @@ const SearchContainer = styled.div`
     flex-wrap: wrap;
     align-items: center;
     margin-bottom: 0.5rem;
+    gap: 0.5rem;
 
     > * {
         min-width: 25rem;
