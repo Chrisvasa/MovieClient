@@ -22,6 +22,67 @@ export default function Person() {
         setRating(cresult.data);
     }
 
+    const [showGenres, setShowGenres] = useState(true);
+    const [showMovies, setShowMovies] = useState(false);
+    const [showRatings, setShowRatings] = useState(false);
+
+    // Toggles between true or false on showGenres
+    const onClick = (event) => {
+        const id = event.target.id;
+        setShowGenres(false);
+        setShowMovies(false);
+        setShowRatings(false);
+
+        if (id === 'Genre') {
+            setShowGenres(showGenres => !showGenres);
+        }
+        else if (id === 'Movie') {
+            setShowMovies(showMovies => !showMovies);
+        }
+        else {
+            setShowRatings(showRatings => !showRatings);
+        }
+    }
+
+    const ReturnGenres = () => {
+        return (
+            <Content>
+                <Title>Liked Genres</Title>
+                {genres.map((genre) =>
+                    <div key={genre.id} className="genre">
+                        <h3>{genre.genre}</h3>
+                    </div>)}
+            </Content>
+        )
+    }
+
+    const ReturnMovies = () => {
+        return (
+            <Content>
+                <Title>Movies added to DB</Title>
+                {movies.map((movie) =>
+                    <div key={movie.id} className="movie">
+                        <h3>{movie.title}</h3>
+                        <h4>{movie.link}</h4>
+                    </div>)}
+            </Content>
+        )
+    }
+
+    const ReturnRatings = () => {
+        return (
+            <Content>
+                <Title>Rated movies</Title>
+                {ratings.map((ratedMovies) =>
+                    <div key={ratedMovies.id}>
+                        <h3>{ratedMovies.movie.title}</h3>
+                        <h4>{ratedMovies.movie.link}</h4>
+                        <p>{ratedMovies.movieRating}</p>
+                    </div>)}
+            </Content>
+        )
+    }
+
     // On page Load
     useEffect(() => {
         console.log("Loaded");
@@ -38,39 +99,18 @@ export default function Person() {
                         <h5>{person.email}</h5>
                     </div>
                     <div className="button-container">
-                        <Button>Genres</Button>
-                        <Button>Movies</Button>
-                        <Button>Ratings</Button>
+                        <Button onClick={onClick} id='Genre' className={showGenres === true ? 'active' : ''}>Genres</Button>
+                        <Button onClick={onClick} id='Movie' className={showMovies === true ? 'active' : ''}>Movies</Button>
+                        <Button onClick={onClick} id='Rating' className={showRatings === true ? 'active' : ''}>Ratings</Button>
                     </div>
                 </Header>
-                <Main>
+                <ContentContainer>
                     <Div className="main">
-                        <h1>Liked Genres</h1>
+                        {showGenres ? <ReturnGenres /> : null}
+                        {showMovies ? <ReturnMovies /> : null}
+                        {showRatings ? <ReturnRatings /> : null}
                     </Div>
-                    {/* {genres.map((genre) =>
-                            <div key={genre.id} className="genre">
-                                <h3>{genre.likedGenres}</h3>
-                            </div>)} */}
-                    {/* <Div>
-                        <MovieContainer>
-                            <h1>Movies added to DB</h1>
-                            {movies.map((movie) =>
-                                <MovieCard key={movie.id} className="movie">
-                                    <h3>{movie.title}</h3>
-                                    <h4>{movie.link}</h4>
-                                </MovieCard>)}
-                        </MovieContainer>
-                    </Div>
-                    <Div>
-                        <h1>Rated movies</h1>
-                        {ratings.map((ratedMovies) =>
-                            <div>
-                                <h3>{ratedMovies.movie.title}</h3>
-                                <h4>{ratedMovies.movie.link}</h4>
-                                <p>{ratedMovies.movieRating}</p>
-                            </div>)}
-                    </Div> */}
-                </Main>
+                </ContentContainer>
                 {/* <Div className="extra">
                     <h1>Test</h1>
                 </Div> */}
@@ -79,9 +119,22 @@ export default function Person() {
     );
 }
 
-const Main = styled.div`
+const Title = styled.h1`
+    margin-bottom: 1rem;
+    font-size: 3rem;
+    color: #37ff8b;
+`
+
+const ContentContainer = styled.div`
     grid-column: 2/-1;
     grid-row: 1/2;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    height: minmax(45rem, fit-content);
+`;
+
+const Content = styled.div`
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
@@ -93,12 +146,14 @@ const PersonContainer = styled.div`
     grid-template-columns: 1fr 2fr;
     height: 100vh;
 
-    Div {
+    div:first-child{
         width: 100%;
         height: 100%;
         &:hover {
             transform: scale(1)
         }
+    }
+    div {
         > h3 {
             color: #fff;
         }
@@ -120,6 +175,10 @@ align-items: center;
 flex-direction: column;
 gap: 1rem;
 
+h2{
+    color: #37ff8b;
+}
+
 img {
     height: 18rem;
     border-radius: 100%;
@@ -137,52 +196,23 @@ div {
     flex-direction: column;
     align-items: center;
 
+    .active {
+    box-sizing: border-box;
+    content: attr(data-text);
+    color: var(--animation-color);
+    overflow: hidden;
+    transition: 0.5s;
+    -webkit-text-stroke: 1px var(--animation-color);
+    width: 100%;
+    inset: 0%;
+    filter: drop-shadow(0 0 6px var(--animation-color))
+    }
+
     button {
-        width: 10rem;
+        width: 11rem;
         margin-bottom: 1.5rem;
         /* background-color: transparent;
         border: 0px; */
     }
 }
-`;
-
-const MovieContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 0.25rem;
-`;
-
-const MovieCard = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    margin: 0;
-    padding: 0;
-    width: 15rem;
-    height: 25rem;
-    box-sizing: border-box;
-    background: rgba(38, 37, 44, 0.58);
-    border: 1px solid black;
-    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
-    backdrop-filter: blur(6px);
-    border-radius: 17px;
-    cursor: pointer;
-    user-select: none;
-    font-weight: bolder;
-    color: #fff;
-    transition: all 0.2s cubic-bezier(0.77,0.2,0.05,1.0);
-    &:hover {
-        border: 1px solid black;
-        transform: scale(1.05);
-        background-color: rgba(38, 37, 44, 0.833);
-    }
-    &:active {
-        transform: scale(0.95) rotateZ(1.7deg);
-    }
-    > h3, p {
-        color: #676473;
-    }
 `;

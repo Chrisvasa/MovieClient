@@ -125,11 +125,8 @@ const MovieCard = styled.div`
     &:active {
         transform: scale(0.95) rotateZ(1.7deg);
     }
-    > h3, p {
-        color: #676473;
-    }
 `;
 
 const H3 = styled.h3`
-    color: #676473;
+    color: #37ff8b;
 `;

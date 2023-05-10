@@ -54,14 +54,14 @@ const Button = styled.button`
     -moz-border-radius: 60;
     border-radius: 60px;
     font-family: Arial;
-    color: #676473;
+    color: #37ff8b;
     font-size: 30px;
     padding: 10px 20px 10px 20px;
     text-decoration: none;
     cursor: pointer;
 
     &:hover {
-        color:#fff;
+        color: #37ff8b;
         background: #19191c;
         background-image: -webkit-linear-gradient(top, #393840, #202024);
         background-image: -moz-linear-gradient(top, #393840, #202024);
@@ -78,4 +78,8 @@ const PersonContainer = styled.div`
     flex-wrap: wrap;
     justify-content: center;
     gap: 1rem;
+
+    h1{
+        color: #37ff8b;
+    }
 `;
