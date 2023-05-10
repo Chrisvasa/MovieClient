@@ -16,14 +16,14 @@ export default function Movies() {
     const img = 'https://image.tmdb.org/t/p/original'
     const [movies, setMovies] = useState({ results: [] });
     const fetchMovies = async () => {
-        const result = await axios.get("https://api.themoviedb.org/3/discover/movie?api_key=d82f364f4fa13e9d2bc3e63a48f37d0c&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=35");
+        const result = await axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=d82f364f4fa13e9d2bc3e63a48f37d0c&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=35`);
         setMovies(result.data);
     }
 
     // Gets a movie from the search value
     const fetchMovieFromSearch = async () => {
         if (textInput != '') {
-            const result = await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=d82f364f4fa13e9d2bc3e63a48f37d0c&language=en-US&query=${textInput}&page=1&include_adult=false`);
+            const result = await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=d82f364f4fa13e9d2bc3e63a48f37d0c&language=en-US&query=${textInput}&include_adult=false&page=1`);
             setMovies(result.data);
         }
     }

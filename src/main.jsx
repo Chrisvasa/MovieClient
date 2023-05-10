@@ -28,9 +28,9 @@ const router = createBrowserRouter(
       <Route path='/' element={<Persons />} />
       <Route path='/person/:id' element={<Person />} />
       <Route path='movies' element={<Movies />} />
-      <Route path='/movies/:id' element={<Movie />} />
+      <Route path='movies/:id' element={<Movie />} />
       <Route path='genres' element={<Genres />} />
-      <Route path='/genres/:id' element={<Genre />} />
+      <Route path='genres/:id' element={<Genre />} />
 
       <Route path="*" element={ErrorPage} />
     </Route>

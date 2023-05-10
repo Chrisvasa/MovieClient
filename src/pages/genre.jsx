@@ -9,12 +9,15 @@ export default function Genre() {
     const [genres, setGenre] = useState([]);
 
     const Add = async () => {
-        // console.log(genre.id)
-        const result = await api.post(`Genre/AddPersonToGenre?personId=${6}&genreId=${genre.id}`);
-        console.log(await result.data)
+        await api.post(`Genre/AddPersonToGenre?personId=${6}&genreId=${genre.id}`)
+            .then(() => {
+                console.log("Genre was added succesfully!");
+            })
+            .catch(() => {
+                console.log("That person already likes this genre");
+            });
+    };
 
-    }
-    // const person = state.person;
     return (
         <>
             <h1>{genre.name}</h1>

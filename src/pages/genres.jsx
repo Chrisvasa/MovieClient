@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import api from '../Api';
-import { Div } from '../components/styling'
+import { Div, Button } from '../components/styling'
 import styled from "styled-components";
 import { useNavigate } from 'react-router-dom';
 
@@ -9,23 +9,23 @@ import { useNavigate } from 'react-router-dom';
  - Tillåt användaren att gilla genrer / Koppla sig till en genre
 */
 export default function Genre() {
-
+    const [showGenres, setShowGenres] = useState(false);
     const [genre, setGenre] = useState([]);
+
     const fetchData = async () => {
         const result = await api.get("Genres");
         setGenre(result.data);
     }
 
-    useEffect(() => {
-        fetchData();
-    }, []);
-
+    // Navigation to another route, also sends the specific Genre that was clicked as a state
     const navigate = useNavigate();
     const GoToGenrePage = (genre) => { navigate(`${genre.id}`, { state: genre }) };
 
-    return (
-        <>
-            <h1>Genres</h1>
+    // Toggles between true or false on showGenres
+    const onClick = () => setShowGenres(showGenres => !showGenres);
+
+    const ReturnGenres = () => {
+        return (
             <GenreContainer>
                 {genre.map((g) =>
                     <Div key={g.id} className='genre' onClick={() => GoToGenrePage(g)}>
@@ -33,6 +33,20 @@ export default function Genre() {
                         <p>ID: {g.id}</p>
                     </Div>)}
             </GenreContainer>
+        )
+    }
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    return (
+        <>
+            <h1>Genres</h1>
+            <div>
+                <Button onClick={onClick}>Show Genres</Button>
+                {showGenres ? <ReturnGenres /> : null}
+            </div>
         </>
     );
 }

@@ -16,8 +16,13 @@ export default function Movie() {
             personId: 5
         }
         console.log(m.genres)
-        const result = await api.post(`Movies/Add?title=${m.title}&link=${m.link}&genres=${m.genres}&personId=${m.personId}`);
-        console.log(result.data)
+        await api.post(`Movies/Add?title=${m.title}&link=${m.link}&genres=${m.genres}&personId=${m.personId}`)
+            .then(() => {
+                console.log("Movie was added succesfully!");
+            })
+            .catch(() => {
+                console.log("Movie already exists in Database");
+            });
 
     }
     return (
