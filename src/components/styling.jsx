@@ -61,7 +61,7 @@ content: attr(data-text);
 color: var(--animation-color);
 border-right: var(--border-right) solid var(--animation-color);
 overflow: hidden;
-transition: 0.5s;
+transition: all 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
 -webkit-text-stroke: 1px var(--animation-color);
 width: 100%;
 inset: 0%;

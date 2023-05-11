@@ -252,13 +252,13 @@ div {
     display: flex;
     flex-direction: column;
     align-items: center;
+    transition: all 0.4s cubic-bezier(0.77,0.2,0.05,1.0);
 
     .active {
     box-sizing: border-box;
     content: attr(data-text);
     color: var(--animation-color);
     overflow: hidden;
-    transition: 0.5s;
     -webkit-text-stroke: 1px var(--animation-color);
     width: 100%;
     inset: 0%;
@@ -270,6 +270,9 @@ div {
         margin-bottom: 1.5rem;
         /* background-color: transparent;
         border: 0px; */
+        &:hover {
+            cursor: pointer;
+        }
     }
 }
 `;
