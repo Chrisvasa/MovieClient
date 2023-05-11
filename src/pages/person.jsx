@@ -1,16 +1,23 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+
 import api from "../Api";
 import { Div, Button } from "../components/styling";
 
 export default function Person() {
     const { state: person } = useLocation();
+    // Keeps the data from the database
     const [genres, setGenre] = useState([]);
     const [movies, setMovie] = useState([]);
     const [ratings, setRating] = useState([]);
+    // useStates to keep track of which data to print out
+    const [showGenres, setShowGenres] = useState(false);
+    const [showMovies, setShowMovies] = useState(false);
+    const [showStats, setShowStats] = useState(true);
     const img = 'https://image.tmdb.org/t/p/original'
 
+    // Fetches all the data necessary for the page - Rated Movies, Liked Genres etc
     const fetchData = async () => {
         console.log(person)
         const result = await api.get(`Genres/FilterByPerson?Name=${person.firstName}`);
@@ -23,9 +30,6 @@ export default function Person() {
         setRating(cresult.data);
     }
 
-    const [showGenres, setShowGenres] = useState(false);
-    const [showMovies, setShowMovies] = useState(false);
-    const [showStats, setShowStats] = useState(true);
 
     // Toggles between true or false on showGenres
     const onClick = (event) => {
@@ -45,6 +49,8 @@ export default function Person() {
         }
     }
 
+    // Allows the user to navigate to the clicked genres page
+    // Also sends all information about the movie as a state to the next page
     const navigate = useNavigate();
     const GoToGenrePage = (genre) => { navigate(`/genres/${genre.genreID}`, { state: { genre: genre, person: person } }) };
 
@@ -52,6 +58,7 @@ export default function Person() {
         document.title = person.firstName + "'s Profile";
     }, []);
 
+    // Prints this when Genre button is clicked
     const ReturnGenres = () => {
         return (
             <Content>
@@ -66,6 +73,7 @@ export default function Person() {
         )
     }
 
+    // Prints this when Movie button is clicked
     const ReturnMovies = () => {
         // Gets the IDs from the movies in the ratings array
         let IDs = ratings.map(c => c.id);
@@ -93,7 +101,8 @@ export default function Person() {
         )
     }
 
-    const ReturnRatings = () => {
+    // Prints this when Stats button is clicked (Also loaded by default)
+    const ReturnStats = () => {
         let genreAmount = genres.length;
         let addedAmount = movies.length;
         let ratedAmount = ratings.length;
@@ -137,7 +146,7 @@ export default function Person() {
                         <div>
                             {showGenres ? <ReturnGenres /> : null}
                             {showMovies ? <ReturnMovies /> : null}
-                            {showStats ? <ReturnRatings /> : null}
+                            {showStats ? <ReturnStats /> : null}
                         </div>
                     </Div>
                 </ContentContainer>
@@ -149,6 +158,7 @@ export default function Person() {
     );
 }
 
+// Styling
 const Title = styled.h1`
     margin-bottom: 1rem;
     font-size: 3rem;

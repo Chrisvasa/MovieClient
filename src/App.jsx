@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import styled from "styled-components";
 import { useNavigate, Outlet } from 'react-router-dom';
 import Modal from 'react-modal';
+import '@smastrom/react-rating/style.css'
 
 import api from './Api';
 import { Div, Button, Input } from './components/styling'

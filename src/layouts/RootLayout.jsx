@@ -33,6 +33,8 @@ export default function RootLayout() {
     );
 }
 
+// Styling
+
 const Main = styled.main`
     margin-left: 10vw;
     width: 80vw;

@@ -1,16 +1,10 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
-import styled from "styled-components";
 import axios from 'axios';
+import styled from "styled-components";
+
 import { Button, Input } from '../components/styling';
 
-/* 
- - Hämta filmer från TMDB
- - Tillåt användaren att filtrera bland dessa genom att skriva in en genre (eller genreid?)
- - Tillåt användaren att klicka på filmen för att få upp mer info om filmen, samt möjligheten att kunna lägga 
- till filmen i databasen (Visa ifall filmen redan finns eller inte)
- - Tillåt användaren att ge rating till filmer (Kolla så de inte redan givit filmen en rating)
- */
 
 export default function Movies() {
     const img = 'https://image.tmdb.org/t/p/original'
@@ -43,6 +37,8 @@ export default function Movies() {
         document.title = "Movies";
     }, []);
 
+    // Allows the user to navigate to the clicked movies page
+    // Also sends all information about the movie as a state to the next page
     const navigate = useNavigate();
     const GoToMoviePage = (movie) => { navigate(`${movie.id}`, { state: movie }) };
 
@@ -67,6 +63,7 @@ export default function Movies() {
     )
 }
 
+// Styling
 const SearchContainer = styled.div`
     display: flex;
     flex-direction: column;

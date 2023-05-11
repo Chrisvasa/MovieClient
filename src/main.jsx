@@ -11,7 +11,6 @@ import {
 //Pages
 import Movies from "./pages/movies";
 import Movie from "./pages/movie";
-import Persons from "./pages/persons";
 import Person from "./pages/person";
 import Genres from './pages/genres';
 import Genre from './pages/genre';

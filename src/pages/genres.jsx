@@ -5,10 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import api from '../Api';
 import { Div, Button } from '../components/styling'
 
-/*
- - Tillåt användaren att se alla Genres i DBn?
- - Tillåt användaren att gilla genrer / Koppla sig till en genre
-*/
 export default function Genre() {
     const [showGenres, setShowGenres] = useState(false);
     const [genre, setGenre] = useState([]);
@@ -25,6 +21,7 @@ export default function Genre() {
     // Toggles between true or false on showGenres
     const onClick = () => setShowGenres(showGenres => !showGenres);
 
+    // Returns Genres when toggled
     const ReturnGenres = () => {
         return (
             <GenreContainer>
@@ -53,6 +50,7 @@ export default function Genre() {
     );
 }
 
+// Styling
 const GenreContainer = styled.div`
     display: flex;
     flex-direction: row;
