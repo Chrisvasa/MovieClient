@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
-import api from '../Api';
-import { Div, Button } from '../components/styling'
 import styled from "styled-components";
 import { useNavigate } from 'react-router-dom';
+
+import api from '../Api';
+import { Div, Button } from '../components/styling'
 
 /*
  - Tillåt användaren att se alla Genres i DBn?
@@ -38,6 +39,7 @@ export default function Genre() {
 
     useEffect(() => {
         fetchData();
+        document.title = "Genres";
     }, []);
 
     return (

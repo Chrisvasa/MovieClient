@@ -40,6 +40,7 @@ export default function Movies() {
 
     useEffect(() => {
         fetchMovies();
+        document.title = "Movies";
     }, []);
 
     const navigate = useNavigate();

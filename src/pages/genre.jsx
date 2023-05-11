@@ -9,7 +9,7 @@ export default function Genre() {
     const [genres, setGenre] = useState([]);
 
     const Add = async () => {
-        await api.post(`Genre/AddPersonToGenre?personId=${6}&genreId=${genre.id}`)
+        await api.post(`Genre/AddPersonToGenre?personId=${6}&genreId=${state.id}`)
             .then(() => {
                 console.log("Genre was added succesfully!");
             })
