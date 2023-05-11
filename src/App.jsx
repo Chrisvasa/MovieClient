@@ -11,18 +11,18 @@ Modal.setAppElement('#root')
 
 export default function App() {
   const [persons, setPerson] = useState([]);
+  const [modalIsOpen, setIsOpen] = useState(false); // To check if modal is open or not
+  const [showOutput, setShowOutput] = useState(false); // Check if output is showing in the modal or not
+  const [output, setOutput] = useState('');
+  // useStates for the user registration
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+
   const fetchData = async () => {
     const result = await api.get("Persons");
     setPerson(result.data);
   }
-
-  useEffect(() => {
-    fetchData();
-    document.title = "Movie Client";
-  }, []);
-
-  // let subtitle;
-  const [modalIsOpen, setIsOpen] = React.useState(false);
 
   function openModal() {
     setIsOpen(true);
@@ -34,6 +34,7 @@ export default function App() {
   }
 
   function closeModal() {
+    setShowOutput(false)
     setIsOpen(false);
   }
 
@@ -42,32 +43,40 @@ export default function App() {
   const navigate = useNavigate();
   const GoToPersonPage = (person) => { navigate(`/person/${person.id}`, { state: person }) };
 
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-
+  // Resets all the rows in the modal when called
   const resetData = () => {
     setFirstName('');
     setLastName('');
     setEmail('');
   }
 
+  // Adds the person to the database if all rows are filled in correctly
+  // And if email is unique
   const AddPerson = async () => {
+    setShowOutput(true)
     if (firstName != '' && lastName != '' && email != '') {
       const result = await api.post(`Persons/Add?FirstName=${firstName}&LastName=${lastName}&Email=${email}`)
         .then(() => {
           console.log("Person was added succesfully!");
+          setOutput("Person was added succesfully!");
           fetchData();
           resetData();
         })
         .catch(() => {
+          setOutput("Person with that email already exists in Database");
           console.log("Person with that email already exists in Database");
         });
     }
     else {
+      setOutput("Please enter valid information");
       console.log("Fill all data");
     }
   }
+
+  useEffect(() => {
+    fetchData();
+    document.title = "Movie Client";
+  }, []);
 
   return (
     <>
@@ -84,7 +93,6 @@ export default function App() {
           contentLabel="Register Person"
         >
           <h2>Register User</h2>
-          {/* <button onClick={closeModal}>close</button> */}
           <div>Enter your information below</div>
           <form onSubmit={() => event.preventDefault()}>
             <h4>First Name</h4>
@@ -96,6 +104,7 @@ export default function App() {
             <br />
             <br />
             <Button onClick={() => AddPerson()}>Submit</Button>
+            {showOutput ? <p>{output}</p> : null}
           </form>
         </Modal>
         {persons.map((person) => (
@@ -113,7 +122,7 @@ export default function App() {
     </>
   )
 }
-
+// Styling
 const customStyles = {
   overlay: {
     position: 'fixed',

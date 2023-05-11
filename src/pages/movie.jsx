@@ -12,6 +12,7 @@ export default function Movie() {
     const { state: movie } = useLocation(); // Gets the state sent from the previous page (Movie info)
     const img = 'https://image.tmdb.org/t/p/original' // Image URL
     const [genre, setGenre] = useState([]);
+    const [person, setPerson] = useState([]);
     const [userRating, setUserRating] = useState(0);
 
     const Add = async () => {
@@ -38,6 +39,12 @@ export default function Movie() {
         setGenre(data.data);
     }
 
+    // Gets all the persons from the database
+    const fetchPersons = async () => {
+        const data = await api.get("Persons");
+        setPerson(data.data);
+    }
+
     // Compares the movies genre IDs with those from the database
     // Then Returns the matching genre names
     const DisplayGenres = () => {
@@ -51,6 +58,7 @@ export default function Movie() {
 
     useEffect(() => {
         fetchGenres();
+        fetchPersons();
         document.title = movie.title;
     }, []);
 
@@ -62,7 +70,6 @@ export default function Movie() {
                     backgroundPosition: 'center',
                     backgroundSize: 'cover',
                     backgroundRepeat: 'no-repeat',
-
                 }}>
                 <div className="bg">
                     <h1>{movie.title}</h1>
