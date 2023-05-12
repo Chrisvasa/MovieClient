@@ -16,8 +16,11 @@ export default function Movie() {
     const [person, setPerson] = useState([]);
     const [userRating, setUserRating] = useState(0);
     const [select, setSelect] = useState();
+    const [showOutput, setShowOutput] = useState(false); // Check if output is showing or not
+    const [output, setOutput] = useState('');
 
     const Add = async () => {
+        setShowOutput(true)
         // Creates a object for an easier to read URL
         const m = {
             title: movie.title,
@@ -27,23 +30,32 @@ export default function Movie() {
         }
         // Posts the added movie to the Database
         await api.post(`Movies/Add?title=${m.title}&link=${m.link}&genres=${m.genres}&personId=${m.personId}`)
-            .then(() => {
+            .then((res) => {
                 console.log("Movie was added succesfully!");
+                setOutput("Movie was added succesfully!");
+                console.log(res)
+                if (res.status == 400) {
+                    console.log(res.status)
+                }
             })
-            .catch(() => {
+            .catch((err) => {
                 console.log("Movie already exists in Database");
+                setOutput("Movie already exists in Database");
             });
     }
     //ratings/addrating?movieId=5&movieRating=7&personId=6
 
     const Rate = async () => {
+        setShowOutput(true)
         // Posts the added movie to the Database
         await api.post(`ratings/addrating?title=${movie.title}&movieRating=${userRating}&personId=${select}`)
             .then(() => {
                 console.log("Movie was rated succesfully!");
+                setOutput("Movie was rated succesfully!");
             })
             .catch(() => {
                 console.log("Movie has already been rated by this person");
+                setOutput("Movie has already been rated by this person");
             });
     }
 
@@ -104,8 +116,8 @@ export default function Movie() {
                     <Rating items={10} style={{ maxWidth: 350 }} value={userRating} onChange={setUserRating} itemStyles={defaultItemStyles} />
                 </div>
             </MovieContainer>
-            <Div>
-                <Select options={options} onChange={(choice) => setSelect(choice.value)} className="test" theme={(theme) => ({
+            <ButtonContainer>
+                <Select options={options} onChange={(choice) => setSelect(choice.value)} theme={(theme) => ({
                     ...theme,
                     borderRadius: 0,
                     colors: {
@@ -114,21 +126,15 @@ export default function Movie() {
                         primary: '#45434d',
                     },
                 })} />
-            </Div>
-            <ButtonContainer>
                 <Button onClick={() => Add()}>Add Movie</Button>
                 <Button onClick={() => Rate()}>Rate Movie</Button>
+                {showOutput ? <p>{output}</p> : null}
             </ButtonContainer>
         </>
     )
 }
 
 // Styling
-
-const Div = styled.div`
-
-`;
-
 const defaultItemStyles = {
     itemShapes: ThinStar,
     itemStrokeWidth: 2,
@@ -146,7 +152,6 @@ const ButtonContainer = styled.div`
     justify-content: center;
 `;
 
-
 const GenreContainer = styled.div`
     display: flex;
     flex-direction: row;
@@ -157,7 +162,6 @@ const GenreContainer = styled.div`
     align-items: center;
     text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000;
 `;
-
 
 const Description = styled.p`
     width: 35vw;

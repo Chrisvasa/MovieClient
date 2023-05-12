@@ -78,7 +78,6 @@ const SearchContainer = styled.div`
     }
 `;
 
-
 const MovieContainer = styled.div`
     display: flex;
     flex-direction: row;

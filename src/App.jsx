@@ -85,6 +85,7 @@ export default function App() {
         <Div onClick={openModal}>
           <AddButton>+</AddButton>
         </Div>
+
         <Modal
           isOpen={modalIsOpen}
           onAfterOpen={afterOpenModal}
@@ -107,6 +108,7 @@ export default function App() {
             {showOutput ? <p>{output}</p> : null}
           </form>
         </Modal>
+
         {persons.map((person) => (
           <Div key={person.id} className='person' onClick={() => GoToPersonPage(person)}>
             <h1>{person.firstName} {person.lastName}</h1>

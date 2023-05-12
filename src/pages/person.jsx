@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import Select from 'react-select'
 
 import api from "../Api";
 import { Div, Button } from "../components/styling";
@@ -9,19 +10,22 @@ export default function Person() {
     const { state: person } = useLocation();
     // Keeps the data from the database
     const [genres, setGenre] = useState([]);
+    const [allGenres, setAllGenres] = useState([]);
     const [movies, setMovie] = useState([]);
     const [ratings, setRating] = useState([]);
     // useStates to keep track of which data to print out
     const [showGenres, setShowGenres] = useState(false);
     const [showMovies, setShowMovies] = useState(false);
     const [showStats, setShowStats] = useState(true);
+
+    const [option, setOption] = useState([]);
+    const [select, setSelect] = useState(''); // Keeps track of selected Genre to add
     const img = 'https://image.tmdb.org/t/p/original'
 
     // Fetches all the data necessary for the page - Rated Movies, Liked Genres etc
     const fetchData = async () => {
-        console.log(person)
-        const result = await api.get(`Genres/FilterByPerson?Name=${person.firstName}`);
-        setGenre(result.data);
+        console.log("Data fetched!")
+        fetchGenres();
 
         const bresult = await api.get(`Movies/GetMoviesForPerson?Name=${person.firstName}`);
         setMovie(bresult.data);
@@ -30,6 +34,15 @@ export default function Person() {
         setRating(cresult.data);
     }
 
+    const fetchGenres = async () => {
+        const result = await api.get(`Genres/FilterByPerson?Name=${person.firstName}`);
+        setGenre(result.data);
+
+        const dresult = await api.get(`Genres`);
+        setAllGenres(dresult.data);
+
+        DisplayGenres();
+    }
 
     // Toggles between true or false on showGenres
     const onClick = (event) => {
@@ -49,13 +62,51 @@ export default function Person() {
         }
     }
 
+    const Add = async () => {
+        await api.post(`Genre/AddPersonToGenre?personId=${person.id}&genreId=${select}`)
+            .then(() => {
+                console.log("Genre was added succesfully!");
+                fetchGenres();
+            })
+            .catch(() => {
+                console.log("That person already likes this genre");
+            });
+    };
+
+    const [selectedId, setSelectedId] = useState(null);
+
+    const DisplayGenres = () => {
+        let ids = genres.map((x) => x.genreID);
+        const filteredGenres = allGenres.filter(({ id }) => !ids.includes(id)).map((x) => x)
+        // setOption(filteredGenres);
+
+        const handleClick = (id) => {
+            setSelectedId(id);
+            setSelect(id);
+        };
+
+        return (
+            <GenreContainer>
+                {filteredGenres.map((g) =>
+                    <Div key={g.id} className={`genres ${g.id === selectedId ? 'selected' : ''}`} onClick={() => handleClick(g.id)}>
+                        <h2>{g.name}</h2>
+                        {/* <p>ID: {g.id}</p> */}
+                    </Div>)}
+            </GenreContainer>
+        )
+        console.log("Genres filtered!");
+    }
+
     // Allows the user to navigate to the clicked genres page
     // Also sends all information about the movie as a state to the next page
     const navigate = useNavigate();
     const GoToGenrePage = (genre) => { navigate(`/genres/${genre.genreID}`, { state: { genre: genre, person: person } }) };
 
+    // On page Load
     useEffect(() => {
         document.title = person.firstName + "'s Profile";
+        fetchData();
+        DisplayGenres();
     }, []);
 
     // Prints this when Genre button is clicked
@@ -68,7 +119,10 @@ export default function Person() {
                         <h3>{genre.name}</h3>
                         {/* <p>{genre.description}</p> */}
                     </Div>)}
-                <Button>Add Genre</Button>
+                <ButtonContainer>
+                    <Button onClick={() => Add()} onMouseUp={fetchGenres} className="btnGenre">Add Genre</Button>
+                    <DisplayGenres />
+                </ButtonContainer>
             </Content>
         )
     }
@@ -116,15 +170,13 @@ export default function Person() {
                     <h3>Movies added: {addedAmount}</h3>
                     <h3>Movies rated: {ratedAmount}</h3>
                 </div>
+                <div>
+                    <h3>Most watched movie:</h3>
+                    <h3>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis, quos.</h3>
+                </div>
             </Content>
         )
     }
-
-    // On page Load
-    useEffect(() => {
-        console.log("Loaded");
-        fetchData();
-    }, []);
     // const person = state.person;
     return (
         <>
@@ -158,6 +210,20 @@ export default function Person() {
     );
 }
 
+const GenreContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.69rem;
+`;
+
+const ButtonContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+`;
+
 // Styling
 const Title = styled.h1`
     margin-bottom: 1rem;
@@ -167,12 +233,36 @@ const Title = styled.h1`
 
 const ContentContainer = styled.div`
     grid-column: 2/-1;
-    grid-row: 1/2;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    min-height: 45rem;
-    max-height: fit-content;
+    height: 45rem;
+    max-height: 100vh;
+
+    .selected {
+            color: #37ff8b;
+        }
+
+    Div:first-child {
+        .genres {
+            height: fit-content;
+            width: fit-content;
+            padding: 0.4rem;
+        h3 {
+            color: #37ff8b;
+            box-shadow: rgba(0, 0, 0, 0.09) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 4px 8px, rgba(0, 0, 0, 0.09) 0px 12px 16px;
+            border-top-left-radius: 17px;
+            border-top-right-radius: 17px;
+        }
+        }
+    }
+
+    .btnGenre {
+        width: 20rem;
+        align-self: center;
+        margin-bottom: 1rem;
+        margin-top: 1rem;
+    }
 `;
 
 const Content = styled.div`
@@ -186,7 +276,6 @@ const Content = styled.div`
         h3 {
             color: #37ff8b;
             box-shadow: rgba(0, 0, 0, 0.09) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 4px 8px, rgba(0, 0, 0, 0.09) 0px 12px 16px;
-            width: 100%;
             border-top-left-radius: 17px;
             border-top-right-radius: 17px;
         }
@@ -209,7 +298,7 @@ const Content = styled.div`
 
 const PersonContainer = styled.div`
     display:grid;
-    grid-template-rows: 3fr 2fr;
+    grid-template-rows: 1fr;
     grid-template-columns: 1fr 2fr;
     height: 100vh;
 
@@ -235,7 +324,6 @@ const PersonContainer = styled.div`
 `
 
 const Header = styled.div`
-grid-row: 1/-1;
 grid-column: 1/2;
 display: flex;
 align-items: center;
