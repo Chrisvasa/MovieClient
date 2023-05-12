@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Rating, ThinStar } from '@smastrom/react-rating'
 import styled from "styled-components"
 import { useLocation } from "react-router-dom";
+import Select from 'react-select'
 
 import api from "../Api"
 import { Button } from "../components/styling";
@@ -14,6 +15,7 @@ export default function Movie() {
     const [genre, setGenre] = useState([]);
     const [person, setPerson] = useState([]);
     const [userRating, setUserRating] = useState(0);
+    const [select, setSelect] = useState();
 
     const Add = async () => {
         // Creates a object for an easier to read URL
@@ -21,7 +23,7 @@ export default function Movie() {
             title: movie.title,
             link: `https://www.themoviedb.org/movie/${movie.id}`,
             genres: movie.genre_ids.map((x) => x).toString(),
-            personId: 5
+            personId: select
         }
         // Posts the added movie to the Database
         await api.post(`Movies/Add?title=${m.title}&link=${m.link}&genres=${m.genres}&personId=${m.personId}`)
@@ -32,17 +34,29 @@ export default function Movie() {
                 console.log("Movie already exists in Database");
             });
     }
+    //ratings/addrating?movieId=5&movieRating=7&personId=6
+
+    const Rate = async () => {
+        // Posts the added movie to the Database
+        await api.post(`ratings/addrating?title=${movie.title}&movieRating=${userRating}&personId=${select}`)
+            .then(() => {
+                console.log("Movie was rated succesfully!");
+            })
+            .catch(() => {
+                console.log("Movie has already been rated by this person");
+            });
+    }
 
     // Gets all the genres from the database (Mostly for the names)
     const fetchGenres = async () => {
-        const data = await api.get("Genres");
-        setGenre(data.data);
+        const res = await api.get("Genres");
+        setGenre(res.data);
     }
 
     // Gets all the persons from the database
     const fetchPersons = async () => {
-        const data = await api.get("Persons");
-        setPerson(data.data);
+        const res = await api.get("Persons");
+        setPerson(res.data);
     }
 
     // Compares the movies genre IDs with those from the database
@@ -61,6 +75,12 @@ export default function Movie() {
         fetchPersons();
         document.title = movie.title;
     }, []);
+
+    const options =
+        person.map((x) => ({
+            value: x.id,
+            label: x.firstName
+        }))
 
     return (
         <>
@@ -84,15 +104,31 @@ export default function Movie() {
                     <Rating items={10} style={{ maxWidth: 350 }} value={userRating} onChange={setUserRating} itemStyles={defaultItemStyles} />
                 </div>
             </MovieContainer>
+            <Div>
+                <Select options={options} onChange={(choice) => setSelect(choice.value)} className="test" theme={(theme) => ({
+                    ...theme,
+                    borderRadius: 0,
+                    colors: {
+                        text: 'orangered',
+                        primary25: '#45434d',
+                        primary: '#45434d',
+                    },
+                })} />
+            </Div>
             <ButtonContainer>
                 <Button onClick={() => Add()}>Add Movie</Button>
-                <Button>Rate Movie</Button>
+                <Button onClick={() => Rate()}>Rate Movie</Button>
             </ButtonContainer>
         </>
     )
 }
 
 // Styling
+
+const Div = styled.div`
+
+`;
+
 const defaultItemStyles = {
     itemShapes: ThinStar,
     itemStrokeWidth: 2,
