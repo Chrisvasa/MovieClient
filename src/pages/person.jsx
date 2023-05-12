@@ -236,8 +236,8 @@ const ContentContainer = styled.div`
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    height: 45rem;
-    max-height: 100vh;
+    min-height: 45rem;
+    max-height: fit-content;
 
     .selected {
             color: #37ff8b;

@@ -9,9 +9,10 @@ import { Button, Input } from '../components/styling';
 export default function Movies() {
     const img = 'https://image.tmdb.org/t/p/original'
     const [movies, setMovies] = useState({ results: [] });
+    const [page, setPage] = useState(1);
     //Fetches movies with given page number from TMDB
     const fetchMovies = async () => {
-        const result = await axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=d82f364f4fa13e9d2bc3e63a48f37d0c&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=35`);
+        const result = await axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=d82f364f4fa13e9d2bc3e63a48f37d0c&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=${page}&with_genres=35`);
         setMovies(result.data);
     }
 
@@ -32,10 +33,20 @@ export default function Movies() {
         setTextInput(event.target.value);
     }
 
+    const pageDown = () => {
+        if (page > 1) {
+            setPage(page - 1);
+        }
+    }
+
+    const pageUp = () => {
+        setPage(page + 1);
+    }
+
     useEffect(() => {
         fetchMovies();
         document.title = "Movies";
-    }, []);
+    }, [page]);
 
     // Allows the user to navigate to the clicked movies page
     // Also sends all information about the movie as a state to the next page
@@ -47,6 +58,11 @@ export default function Movies() {
             <SearchContainer>
                 <Input type="text" placeholder='Search by name..' onChange={handleChange} />
                 <Button onClick={fetchMovieFromSearch}>Search</Button>
+                <p className='currentPage'>Page: {page} / {movies.total_pages}</p>
+                <div className='buttons'>
+                    <Button onClick={() => pageDown()}>-</Button>
+                    <Button onClick={() => pageUp()}>+</Button>
+                </div>
             </SearchContainer>
             <MovieContainer>
                 {movies.results.map((movie) => (
@@ -76,6 +92,21 @@ const SearchContainer = styled.div`
         min-width: 25rem;
         max-width: 25rem;
     }
+    .buttons {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        gap: 0.5rem;
+
+        > * {
+            width: 5rem;
+            height: 4rem;
+        }
+    }
+
+    .currentPage {
+        text-align: center;
+    }
 `;
 
 const MovieContainer = styled.div`
@@ -99,8 +130,6 @@ const MovieCard = styled.div`
     flex-direction: column;
     align-items: center;
     text-align: center;
-    margin: 0;
-    padding: 0;
     width: 25rem;
     height: 25rem;
     box-sizing: border-box;

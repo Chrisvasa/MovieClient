@@ -30,20 +30,16 @@ export default function Movie() {
         }
         // Posts the added movie to the Database
         await api.post(`Movies/Add?title=${m.title}&link=${m.link}&genres=${m.genres}&personId=${m.personId}`)
-            .then((res) => {
+            .then(() => {
                 console.log("Movie was added succesfully!");
                 setOutput("Movie was added succesfully!");
-                console.log(res)
-                if (res.status == 400) {
-                    console.log(res.status)
-                }
             })
             .catch((err) => {
+                console.log(err);
                 console.log("Movie already exists in Database");
                 setOutput("Movie already exists in Database");
             });
     }
-    //ratings/addrating?movieId=5&movieRating=7&personId=6
 
     const Rate = async () => {
         setShowOutput(true)
