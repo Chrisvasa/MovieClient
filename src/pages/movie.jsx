@@ -43,16 +43,21 @@ export default function Movie() {
 
     const Rate = async () => {
         setShowOutput(true)
-        // Posts the added movie to the Database
-        await api.post(`ratings/addrating?title=${movie.title}&movieRating=${userRating}&personId=${select}`)
-            .then(() => {
-                console.log("Movie was rated succesfully!");
-                setOutput("Movie was rated succesfully!");
-            })
-            .catch(() => {
-                console.log("Movie has already been rated by this person");
-                setOutput("Movie has already been rated by this person");
-            });
+        if (userRating != 0) {
+            // Posts the added movie to the Database
+            await api.post(`ratings/addrating?title=${movie.title}&movieRating=${userRating}&personId=${select}`)
+                .then(() => {
+                    console.log("Movie was rated succesfully!");
+                    setOutput("Movie was rated succesfully!");
+                })
+                .catch(() => {
+                    console.log("Movie has already been rated by this person");
+                    setOutput("Movie has already been rated by this person");
+                });
+        }
+        else {
+            setOutput("Please select a rating!");
+        }
     }
 
     // Gets all the genres from the database (Mostly for the names)

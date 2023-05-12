@@ -6,7 +6,7 @@
 
 **Work in progress** - A webclient built with react to interact with my previous project where I built an API. 
 
- ![enter image description here](https://i.imgur.com/gsc3Yv8.png)
+ ![enter image description here](https://i.ibb.co/WBsDsMK/Screenshot-2023-05-12-145149.png)
 
 ## ⚙️ Features
 

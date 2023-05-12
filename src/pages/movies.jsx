@@ -60,8 +60,8 @@ export default function Movies() {
                 <Button onClick={fetchMovieFromSearch}>Search</Button>
                 <p className='currentPage'>Page: {page} / {movies.total_pages}</p>
                 <div className='buttons'>
-                    <Button onClick={() => pageDown()}>-</Button>
-                    <Button onClick={() => pageUp()}>+</Button>
+                    <Button onClick={() => pageDown()}>BACK</Button>
+                    <Button onClick={() => pageUp()}>NEXT</Button>
                 </div>
             </SearchContainer>
             <MovieContainer>
@@ -99,7 +99,7 @@ const SearchContainer = styled.div`
         gap: 0.5rem;
 
         > * {
-            width: 5rem;
+            width: fit-content;
             height: 4rem;
         }
     }
