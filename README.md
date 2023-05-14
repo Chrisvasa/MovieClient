@@ -4,9 +4,10 @@
 # React Client for a local Movie DB
   A web client built with React to interact with my [previous project](https://github.com/Chrisvasa/MovieSystem) where I built an API.
 
-![enter image description here](https://i.ibb.co/199ZLtC/rsz-screenshot-2023-05-14-200418.png)
 
-  
+<p align="center">
+  <img src="https://i.ibb.co/199ZLtC/rsz-screenshot-2023-05-14-200418.png" />
+</p>
 
 ## ⚙️ Features
 - Register new users.
