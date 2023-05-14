@@ -3,16 +3,17 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Select from 'react-select'
 
-import api from "../Api";
+import api from "../components/Api";
 import { Div, Button } from "../components/styling";
 
 export default function Person() {
-    const { state: person } = useLocation();
+    const { state: person } = useLocation(); // Gets all the user information from the previous page (Name, email etc)
     // Keeps the data from the database
-    const [genres, setGenre] = useState([]);
-    const [allGenres, setAllGenres] = useState([]);
-    const [movies, setMovie] = useState([]);
-    const [ratings, setRating] = useState([]);
+    const [genres, setGenre] = useState([]); // useState to keep track of a users liked genres
+    const [allGenres, setAllGenres] = useState([]); // useState to keep track of all the genres
+    const [movies, setMovie] = useState([]); // useState to keep track of a users added movies
+    const [ratings, setRating] = useState([]); // useState to keep track of a users rated movies
+
     // useStates to keep track of which data to print out
     const [showGenres, setShowGenres] = useState(false);
     const [showMovies, setShowMovies] = useState(false);
@@ -20,7 +21,8 @@ export default function Person() {
 
     const [option, setOption] = useState([]);
     const [select, setSelect] = useState(''); // Keeps track of selected Genre to add
-    const img = 'https://image.tmdb.org/t/p/original'
+    const [selectedId, setSelectedId] = useState(null);
+    const img = 'https://image.tmdb.org/t/p/original' // Base URL for images
 
     // Fetches all the data necessary for the page - Rated Movies, Liked Genres etc
     const fetchData = async () => {
@@ -61,8 +63,8 @@ export default function Person() {
             setShowStats(showRatings => !showRatings);
         }
     }
-
-    const Add = async () => {
+    // Allows the user to like new genres
+    const AddGenre = async () => {
         await api.post(`Genre/AddPersonToGenre?personId=${person.id}&genreId=${select}`)
             .then(() => {
                 console.log("Genre was added succesfully!");
@@ -72,8 +74,6 @@ export default function Person() {
                 console.log("That person already likes this genre");
             });
     };
-
-    const [selectedId, setSelectedId] = useState(null);
 
     const DisplayGenres = () => {
         let ids = genres.map((x) => x.genreID);
@@ -88,9 +88,8 @@ export default function Person() {
         return (
             <GenreContainer>
                 {filteredGenres.map((g) =>
-                    <Div key={g.id} className={`genres ${g.id === selectedId ? 'selected' : ''}`} onClick={() => handleClick(g.id)}>
+                    <Div key={g.id} className={`genres ${g.id === selectedId ? 'highlighted' : ''}`} onClick={() => handleClick(g.id)}>
                         <h2>{g.name}</h2>
-                        {/* <p>ID: {g.id}</p> */}
                     </Div>)}
             </GenreContainer>
         )
@@ -100,7 +99,10 @@ export default function Person() {
     // Allows the user to navigate to the clicked genres page
     // Also sends all information about the movie as a state to the next page
     const navigate = useNavigate();
-    const GoToGenrePage = (genre) => { navigate(`/genres/${genre.genreID}`, { state: { genre: genre, person: person } }) };
+    const GoToMoviePage = async (m) => {
+        const movie = await api.get(`https://api.themoviedb.org/3/movie/${m}?api_key={apiKey}&language=en-US`)
+        navigate(`/movies/${m}`, { state: movie.data })
+    };
 
     // On page Load
     useEffect(() => {
@@ -115,12 +117,12 @@ export default function Person() {
             <Content>
                 <Title>Liked Genres</Title>
                 {genres.map((genre) =>
-                    <Div key={genre.genreID} className="cont" onClick={() => GoToGenrePage(genre)}>
+                    <Div key={genre.genreID} className="cont">
                         <h3>{genre.name}</h3>
                         {/* <p>{genre.description}</p> */}
                     </Div>)}
                 <ButtonContainer>
-                    <Button onClick={() => Add()} onMouseUp={fetchGenres} className="btnGenre">Add Genre</Button>
+                    <Button onClick={() => AddGenre()} onMouseUp={fetchGenres} className="btnGenre">Add Genre</Button>
                     <DisplayGenres />
                 </ButtonContainer>
             </Content>
@@ -133,8 +135,8 @@ export default function Person() {
         let IDs = ratings.map(c => c.id);
         // Compares the IDs to the movie IDs and filters out duplicates
         const tempMov = ratings.concat(movies.filter(({ id }) => !IDs.includes(id)))
-
-        function CheckRating(movie) {
+        // Checks if the movie has been rated or only added to the DB by the user
+        const CheckRating = (movie) => {
             if (movie.movieRating == null) {
                 movie.movieRating = "Not yet rated by you."
             }
@@ -142,14 +144,20 @@ export default function Person() {
                 movie.movieRating
             )
         }
+
+        const movieID = (movieLink) => {
+            const test = movieLink.split('movie/');
+            return test[1];
+        }
+
         return (
             <Content>
-                <h1>Movies Added or Rated</h1>
+                <Title>Movies Added or Rated</Title>
                 {tempMov.map((movie) =>
                     <div className="movie">
-                        <h2>{movie.title}</h2>
+                        <h2 onClick={() => GoToMoviePage(movieID(movie.link))}>{movie.title}</h2>
                         <h4>{movie.link}</h4>
-                        <p>{CheckRating(movie)}</p>
+                        <p className="highlighted">{CheckRating(movie)}</p>
                     </div>)}
             </Content>
         )
@@ -184,7 +192,7 @@ export default function Person() {
                 <Header>
                     <img src="https://placehold.co/400x400" alt="" />
                     <div className="info">
-                        <h2>{person.firstName} {person.lastName}</h2>
+                        <h2 className="highlighted">{person.firstName} {person.lastName}</h2>
                         <h5>{person.email}</h5>
                     </div>
                     <div className="button-container">
@@ -210,6 +218,7 @@ export default function Person() {
     );
 }
 
+// Styling
 const GenreContainer = styled.div`
     display: flex;
     flex-direction: row;
@@ -224,7 +233,6 @@ const ButtonContainer = styled.div`
     flex-wrap: wrap;
 `;
 
-// Styling
 const Title = styled.h1`
     margin-bottom: 1rem;
     font-size: 3rem;
@@ -239,7 +247,7 @@ const ContentContainer = styled.div`
     min-height: 45rem;
     max-height: fit-content;
 
-    .selected {
+    .highlighted{
             color: #37ff8b;
         }
 
@@ -248,12 +256,6 @@ const ContentContainer = styled.div`
             height: fit-content;
             width: fit-content;
             padding: 0.4rem;
-        h3 {
-            color: #37ff8b;
-            box-shadow: rgba(0, 0, 0, 0.09) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 4px 8px, rgba(0, 0, 0, 0.09) 0px 12px 16px;
-            border-top-left-radius: 17px;
-            border-top-right-radius: 17px;
-        }
         }
     }
 
@@ -284,9 +286,6 @@ const Content = styled.div`
         }
     }
     .movie {
-        p {
-            color: #37ff8b;
-        }
         h4 {
             color: #676473;
         }
@@ -310,27 +309,20 @@ const PersonContainer = styled.div`
         }
     }
     div {
-        > h3 {
-            color: #fff;
-        }
-        > p, h5 {
+        > h5 {
             color: gray;
         }
-        > h1 {
-            color: #37ff8b;
-        }
     }
-
 `
 
 const Header = styled.div`
-grid-column: 1/2;
-display: flex;
-align-items: center;
-flex-direction: column;
-gap: 1rem;
+    grid-column: 1/2;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 1rem;
 
-h2{
+.highlighted {
     color: #37ff8b;
 }
 
@@ -366,11 +358,6 @@ div {
     button {
         width: 11rem;
         margin-bottom: 1.5rem;
-        /* background-color: transparent;
-        border: 0px; */
-        &:hover {
-            cursor: pointer;
-        }
     }
 }
 `;

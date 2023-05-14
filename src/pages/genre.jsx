@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 
 import { Button } from "../components/styling";
-import api from "../Api";
+import api from "../components/Api";
 
 // ALLOW USER TO ADD GENRE AND SELECT A USER
 

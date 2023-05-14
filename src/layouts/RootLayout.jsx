@@ -1,6 +1,5 @@
 import { NavLink, Outlet } from 'react-router-dom';
 import styled from 'styled-components';
-import Breadcrumbs from '../components/Breadcrumbs';
 
 //The standard layout for every page with a header and some NavLinks to move to other sites
 export default function RootLayout() {
@@ -24,7 +23,6 @@ export default function RootLayout() {
                     </NavLinkContainer>
                 </Nav>
             </Header>
-            {/* <Breadcrumbs /> */}
 
             <Main>
                 <Outlet />
@@ -34,7 +32,6 @@ export default function RootLayout() {
 }
 
 // Styling
-
 const Main = styled.main`
     margin-left: 10vw;
     width: 80vw;

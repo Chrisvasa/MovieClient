@@ -3,23 +3,25 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styled from "styled-components";
 
-import { Button, Input } from '../components/styling';
+import { Button, Input, MovieCard, Img, H3, CardContainer } from '../components/styling';
 
-
+// Function that shows all the movies from TMDB and allows you to search for specific movies 
+// and click the movies to go to that specific movies page
 export default function Movies() {
-    const img = 'https://image.tmdb.org/t/p/original'
-    const [movies, setMovies] = useState({ results: [] });
-    const [page, setPage] = useState(1);
+    const img = 'https://image.tmdb.org/t/p/original' // BASE URL for images
+    const [movies, setMovies] = useState({ results: [] }); // useState to store all the movies
+    const [page, setPage] = useState(1); // useState to keep track of the current page - Set to 1 by default
+
     //Fetches movies with given page number from TMDB
     const fetchMovies = async () => {
-        const result = await axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=d82f364f4fa13e9d2bc3e63a48f37d0c&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=${page}&with_genres=35`);
+        const result = await axios.get(`https://api.themoviedb.org/3/discover/movie?api_key={apiKey}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=${page}`);
         setMovies(result.data);
     }
 
     // Gets movies that match the given search value
     const fetchMovieFromSearch = async () => {
         if (textInput != '') {
-            const result = await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=d82f364f4fa13e9d2bc3e63a48f37d0c&language=en-US&query=${textInput}&include_adult=false&page=1`);
+            const result = await axios.get(`https://api.themoviedb.org/3/search/movie?api_key={apiKey}&language=en-US&query=${textInput}&include_adult=false&page=1`);
             setMovies(result.data);
         }
     }
@@ -43,6 +45,7 @@ export default function Movies() {
         setPage(page + 1);
     }
 
+    // On page load
     useEffect(() => {
         fetchMovies();
         document.title = "Movies";
@@ -64,7 +67,7 @@ export default function Movies() {
                     <Button onClick={() => pageUp()}>NEXT</Button>
                 </div>
             </SearchContainer>
-            <MovieContainer>
+            <CardContainer>
                 {movies.results.map((movie) => (
                     <MovieCard key={movie.id} className='movie' onClick={() => GoToMoviePage(movie)}>
                         <Img src={img + movie.backdrop_path} alt="" />
@@ -74,7 +77,7 @@ export default function Movies() {
                         </div>
                     </MovieCard>
                 ))}
-            </MovieContainer>
+            </CardContainer>
         </>
     )
 }
@@ -107,52 +110,4 @@ const SearchContainer = styled.div`
     .currentPage {
         text-align: center;
     }
-`;
-
-const MovieContainer = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 1rem;
-`;
-
-const Img = styled.img`
-    height: 18rem;
-    width: 100%;
-    object-fit: fill;
-    border-top-left-radius: 17px;
-    border-top-right-radius: 17px;
-`;
-
-const MovieCard = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    width: 25rem;
-    height: 25rem;
-    box-sizing: border-box;
-    background: rgba(38, 37, 44, 0.58);
-    border: 1px solid black;
-    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
-    backdrop-filter: blur(6px);
-    border-radius: 17px;
-    cursor: pointer;
-    user-select: none;
-    font-weight: bolder;
-    color: #fff;
-    transition: all 0.2s cubic-bezier(0.77,0.2,0.05,1.0);
-    &:hover {
-        border: 1px solid black;
-        transform: scale(1.05);
-        background-color: rgba(38, 37, 44, 0.833);
-    }
-    &:active {
-        transform: scale(0.95) rotateZ(1.7deg);
-    }
-`;
-
-const H3 = styled.h3`
-    color: #37ff8b;
 `;

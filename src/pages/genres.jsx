@@ -1,37 +1,16 @@
 import { useState, useEffect } from 'react'
 import styled from "styled-components";
-import { useNavigate } from 'react-router-dom';
 
-import api from '../Api';
-import { Div, Button } from '../components/styling'
+import api from '../components/Api';
+import { Div } from '../components/styling'
 
+//Function that prints out all the genre names, their ID and descriptions
 export default function Genre() {
-    const [showGenres, setShowGenres] = useState(false);
     const [genre, setGenre] = useState([]);
 
     const fetchData = async () => {
         const result = await api.get("Genres");
         setGenre(result.data);
-    }
-
-    // Navigation to another route, also sends the specific Genre that was clicked as a state
-    const navigate = useNavigate();
-    const GoToGenrePage = (genre) => { navigate(`${genre.id}`, { state: genre }) };
-
-    // Toggles between true or false on showGenres
-    const onClick = () => setShowGenres(showGenres => !showGenres);
-
-    // Returns Genres when toggled
-    const ReturnGenres = () => {
-        return (
-            <GenreContainer>
-                {genre.map((g) =>
-                    <Div key={g.id} className='genre' onClick={() => GoToGenrePage(g)}>
-                        <h2>{g.name}</h2>
-                        <p>ID: {g.id}</p>
-                    </Div>)}
-            </GenreContainer>
-        )
     }
 
     useEffect(() => {
@@ -40,13 +19,14 @@ export default function Genre() {
     }, []);
 
     return (
-        <>
-            <h1>Genres</h1>
-            <div>
-                <Button onClick={onClick}>Show Genres</Button>
-                {showGenres ? <ReturnGenres /> : null}
-            </div>
-        </>
+        <GenreContainer>
+            {genre.map((g) =>
+                <Div key={g.id} className='genre' onClick={() => GoToGenrePage(g)}>
+                    <h2>{g.name}</h2>
+                    <p className='id'>ID: {g.id}</p>
+                    <p>{g.description}</p>
+                </Div>)}
+        </GenreContainer>
     );
 }
 
@@ -60,5 +40,10 @@ const GenreContainer = styled.div`
     
     .genre {
         width: 15rem;
+        height: 23rem;
+    }
+
+    .id {
+        color: #37ff8b;
     }
 `;

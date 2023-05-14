@@ -4,21 +4,25 @@ import { useNavigate, Outlet } from 'react-router-dom';
 import Modal from 'react-modal';
 import '@smastrom/react-rating/style.css'
 
-import api from './Api';
+import api from './components/Api';
 import { Div, Button, Input } from './components/styling'
 
 Modal.setAppElement('#root')
 
+// Home page of the website that prints out all the users and a new registration form
+// When clicking the users you get sent to that page
 export default function App() {
-  const [persons, setPerson] = useState([]);
+  const [persons, setPerson] = useState([]); // useState to keep track of all the persons on the page
   const [modalIsOpen, setIsOpen] = useState(false); // To check if modal is open or not
   const [showOutput, setShowOutput] = useState(false); // Check if output is showing in the modal or not
-  const [output, setOutput] = useState('');
+  const [output, setOutput] = useState(''); // The output in the modal to see if registration was a success or not
+
   // useStates for the user registration
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
 
+  // Gets all the users from the DB
   const fetchData = async () => {
     const result = await api.get("Persons");
     setPerson(result.data);
@@ -26,11 +30,6 @@ export default function App() {
 
   function openModal() {
     setIsOpen(true);
-  }
-
-  function afterOpenModal() {
-    // references are now sync'd and can be accessed.
-    // subtitle.style.color = '#f00';
   }
 
   function closeModal() {
@@ -73,6 +72,7 @@ export default function App() {
     }
   }
 
+  // On page load
   useEffect(() => {
     fetchData();
     document.title = "Movie Client";
@@ -88,7 +88,6 @@ export default function App() {
 
         <Modal
           isOpen={modalIsOpen}
-          onAfterOpen={afterOpenModal}
           onRequestClose={closeModal}
           style={customStyles}
           contentLabel="Register Person"
