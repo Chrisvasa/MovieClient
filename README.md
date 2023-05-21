@@ -6,8 +6,9 @@
 
 
 <p align="center">
-  <img src="https://i.ibb.co/199ZLtC/rsz-screenshot-2023-05-14-200418.png" />
+  <img src="https://github.com/Chrisvasa/MovieClient/assets/29359169/21888813-616a-414e-ad73-d9501c08245a" />
 </p>
+
 
 ## ⚙️ Features
 - Register new users.
