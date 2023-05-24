@@ -119,7 +119,7 @@ export default function Movie() {
 
     //Gets the recommended movies for the current movie
     const fetchRecommended = async () => {
-        const res = await api.get(`https://api.themoviedb.org/3/movie/${movie.id}/recommendations?api_key={apiKey}&language=en-US&page=1`)
+        const res = await api.get(`https://api.themoviedb.org/3/movie/${movie.id}/recommendations?api_key={Your_API_Key_Here}&language=en-US&page=1`)
         setRecommendation(res.data);
     }
 

@@ -13,7 +13,7 @@ import Movie from "./pages/movie";
 import Person from "./pages/person";
 import Genres from './pages/genres';
 import Genre from './pages/genre';
-import ErrorPage from './error-page';
+import ErrorPage from './pages/error-page';
 import App from "./App"
 import './index.css'
 

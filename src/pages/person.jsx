@@ -19,25 +19,23 @@ export default function Person() {
     const [showMovies, setShowMovies] = useState(false);
     const [showStats, setShowStats] = useState(true);
 
-    const [option, setOption] = useState([]);
     const [select, setSelect] = useState(''); // Keeps track of selected Genre to add
     const [selectedId, setSelectedId] = useState(null);
-    const img = 'https://image.tmdb.org/t/p/original' // Base URL for images
 
     // Fetches all the data necessary for the page - Rated Movies, Liked Genres etc
     const fetchData = async () => {
         console.log("Data fetched!")
         fetchGenres();
 
-        const bresult = await api.get(`Movies/GetMoviesForPerson?Name=${person.firstName}`);
+        const bresult = await api.get(`Movies/GetMoviesForPerson?userID=${person.id}`);
         setMovie(bresult.data);
 
-        const cresult = await api.get(`Ratings/GetRatingsForPerson?Name=${person.firstName}`);
+        const cresult = await api.get(`Ratings/GetRatingsForPerson?userID=${person.id}`);
         setRating(cresult.data);
     }
 
     const fetchGenres = async () => {
-        const result = await api.get(`Genres/FilterByPerson?Name=${person.firstName}`);
+        const result = await api.get(`Genres/FilterByPerson?userID=${person.id}`);
         setGenre(result.data);
 
         const dresult = await api.get(`Genres`);
@@ -100,7 +98,7 @@ export default function Person() {
     // Also sends all information about the movie as a state to the next page
     const navigate = useNavigate();
     const GoToMoviePage = async (m) => {
-        const movie = await api.get(`https://api.themoviedb.org/3/movie/${m}?api_key={apiKey}&language=en-US`)
+        const movie = await api.get(`https://api.themoviedb.org/3/movie/${m}?api_key={Your_API_Key_Here}&language=en-US`)
         navigate(`/movies/${m}`, { state: movie.data })
     };
 
