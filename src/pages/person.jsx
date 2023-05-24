@@ -3,7 +3,7 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Select from 'react-select'
 
-import api from "../components/Api";
+import api, { apiKey } from "../components/Api";
 import { Div, Button } from "../components/styling";
 
 export default function Person() {
@@ -98,7 +98,7 @@ export default function Person() {
     // Also sends all information about the movie as a state to the next page
     const navigate = useNavigate();
     const GoToMoviePage = async (m) => {
-        const movie = await api.get(`https://api.themoviedb.org/3/movie/${m}?api_key={Your_API_Key_Here}&language=en-US`)
+        const movie = await api.get(`https://api.themoviedb.org/3/movie/${m}?api_key=${apiKey}}&language=en-US`)
         navigate(`/movies/${m}`, { state: movie.data })
     };
 

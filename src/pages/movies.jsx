@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styled from "styled-components";
+import { apiKey } from '../components/Api';
 
 import { Button, Input, MovieCard, Img, H3, CardContainer } from '../components/styling';
 
@@ -14,14 +15,14 @@ export default function Movies() {
 
     //Fetches movies with given page number from TMDB
     const fetchMovies = async () => {
-        const result = await axios.get(`https://api.themoviedb.org/3/discover/movie?api_key={Your_API_Key_Here}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=${page}`);
+        const result = await axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=${page}`);
         setMovies(result.data);
     }
 
     // Gets movies that match the given search value
     const fetchMovieFromSearch = async () => {
         if (textInput != '') {
-            const result = await axios.get(`https://api.themoviedb.org/3/search/movie?api_key={Your_API_Key_Here}&language=en-US&query=${textInput}&include_adult=false&page=1`);
+            const result = await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=en-US&query=${textInput}&include_adult=false&page=1`);
             setMovies(result.data);
         }
     }
